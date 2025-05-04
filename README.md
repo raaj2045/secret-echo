@@ -177,6 +177,20 @@ You can also run the entire application using Docker:
    docker-compose down
    ```
 
+## Deployment
+
+Secret Echo is configured for easy deployment on Vercel. Both the frontend and backend can be deployed as separate projects on Vercel's platform with minimal configuration.
+
+See the [DEPLOYMENT.md](./DEPLOYMENT.md) file for detailed deployment instructions.
+
+### Vercel Deployment Benefits
+
+- **Serverless Architecture**: No server management required
+- **Global CDN**: Automatic content delivery network
+- **Continuous Deployment**: Automatic builds from GitHub
+- **Free Tier**: Generous free tier for hobby and small projects
+- **Environment Variables**: Secure management of secrets
+
 ## Architecture Decisions
 
 ### Authentication Flow
