@@ -14,7 +14,32 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001', 'https://secret-echo.vercel.app', 'https://secret-echo-*.vercel.app'],
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl requests)
+    if(!origin) return callback(null, true);
+    
+    // Allow localhost and Vercel domains
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'https://secret-echo.vercel.app',
+      /^https:\/\/secret-echo-.*\.vercel\.app$/
+    ];
+    
+    // Check if the origin is allowed
+    const isAllowed = allowedOrigins.some(allowedOrigin => {
+      if (allowedOrigin instanceof RegExp) {
+        return allowedOrigin.test(origin);
+      }
+      return allowedOrigin === origin;
+    });
+    
+    if(isAllowed) {
+      return callback(null, true);
+    }
+    
+    callback(new Error('CORS not allowed'));
+  },
   credentials: true
 }));
 app.use(express.json());
@@ -32,7 +57,32 @@ const server = http.createServer(app);
 // Setup Socket.io
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:3000', 'http://localhost:3001', 'https://secret-echo.vercel.app', 'https://secret-echo-*.vercel.app'],
+    origin: function(origin, callback) {
+      // Allow requests with no origin (like mobile apps, curl requests)
+      if(!origin) return callback(null, true);
+      
+      // Allow localhost and Vercel domains
+      const allowedOrigins = [
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'https://secret-echo.vercel.app',
+        /^https:\/\/secret-echo-.*\.vercel\.app$/
+      ];
+      
+      // Check if the origin is allowed
+      const isAllowed = allowedOrigins.some(allowedOrigin => {
+        if (allowedOrigin instanceof RegExp) {
+          return allowedOrigin.test(origin);
+        }
+        return allowedOrigin === origin;
+      });
+      
+      if(isAllowed) {
+        return callback(null, true);
+      }
+      
+      callback(new Error('CORS not allowed'));
+    },
     methods: ['GET', 'POST'],
     credentials: true
   }

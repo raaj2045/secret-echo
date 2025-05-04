@@ -1,6 +1,6 @@
 # Secret Echo Deployment Guide
 
-This guide will help you deploy the Secret Echo application using free services.
+This guide details how to deploy the Secret Echo application using Vercel for the frontend and Render for the backend.
 
 ## Deploying the Backend to Render
 
@@ -33,50 +33,34 @@ This guide will help you deploy the Secret Echo application using free services.
    - Wait for the deployment to complete
    - Note the URL provided (e.g., `https://secret-echo-backend.onrender.com`)
 
-## Deploying with Docker on Render
+## Deploying the Frontend to Vercel
 
-Render also supports deploying your application using Docker, which eliminates the need for separate frontend and backend deployments.
-
-1. **Sign up for Render**:
-   - Go to [Render.com](https://render.com/) and create an account
+1. **Sign up for Vercel**:
+   - Go to [Vercel.com](https://vercel.com/) and create an account
    - Connect your GitHub account
 
-2. **Deploy using Blueprint**:
-   - From your Render dashboard, click "New +"
-   - Select "Blueprint"
-   - Connect your GitHub repository
-   - Choose the repository containing your Secret Echo project
-   - Render will automatically detect the `render.yaml` file in the root
-   - Review the services that will be created (backend and frontend)
+2. **Import the Repository**:
+   - Click "Add New..." -> "Project"
+   - Select your Secret Echo repository
+   - Configure the project:
+     - Framework Preset: Next.js
+     - Root Directory: `frontend` (important!)
 
-3. **Set Environment Variables**:
-   - The `render.yaml` file already includes configurations for:
-     - Automatically connecting frontend to backend
-     - Generating a secure JWT_SECRET
-   - You'll only need to add your MongoDB connection string in the UI
+3. **Add Environment Variables**:
+   - Click "Environment Variables" and add:
+     - `NEXT_PUBLIC_API_URL`: (your Render backend URL)
+     - `NEXT_PUBLIC_SOCKET_URL`: (your Render backend URL)
 
 4. **Deploy**:
-   - Click "Apply"
-   - Render will build and deploy both services according to their Dockerfiles
-   - This may take 5-10 minutes for the initial build
-
-5. **Access Your Application**:
-   - Once deployment is complete, click on the secret-echo-frontend service
-   - Render will provide a URL to access your application
-
-## Advantages of Docker Deployment
-
-- **Consistency**: The same container runs locally and in production
-- **Dependencies**: All dependencies are bundled in the container
-- **Configuration**: Environment is identical between environments
-- **Simplicity**: Deploy both services with a single blueprint
+   - Click "Deploy"
+   - Wait for the deployment to complete
 
 ## Post-Deployment Configuration
 
 1. **Update CORS in Backend**:
    - If your Vercel domain wasn't included in the CORS configuration:
    - Go to Render → secret-echo-backend → Environment
-   - Add your Vercel domain to the allowed origins in index.js
+   - Add your Vercel domain to the allowed origins
 
 2. **Test the Connection**:
    - Visit your Vercel app URL
@@ -87,7 +71,7 @@ Render also supports deploying your application using Docker, which eliminates t
 
 1. **WebSocket Connection Issues**:
    - Check browser console for errors
-   - Ensure CORS is correctly configured
+   - Ensure CORS is correctly configured in the backend
    - Verify your Socket.io URLs are correct
 
 2. **MongoDB Connection Issues**:
@@ -99,8 +83,13 @@ Render also supports deploying your application using Docker, which eliminates t
    - Check that backend is running properly
    - Make sure APIs are correctly formatted (/api/auth, etc.)
 
-## Maintenance
+## Maintenance Notes
 
-- Both Render and Vercel free tiers may "sleep" when inactive
-- The first request might be slow after inactivity
-- For a fully production-ready solution, consider upgrading to paid plans 
+- **Free Tier Limitations**:
+  - Render free tier may "sleep" after inactivity
+  - The first request might be slow (30-60 seconds) after inactivity
+  - For a fully production-ready solution, consider upgrading to paid plans
+
+- **Monitoring**:
+  - Both Vercel and Render provide basic logs and metrics
+  - Check dashboards regularly for service health 
