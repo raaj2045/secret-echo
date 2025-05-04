@@ -2,102 +2,7 @@
 
 A real-time 1-to-1 messaging application with simulated AI responses, built with a MERN stack.
 
-## Overview
-
-Secret Echo is a full-stack messaging application that simulates conversations with an AI assistant. It features a responsive React frontend, an Express backend, and real-time communication via Socket.io. The application is designed for 1-to-1 conversations between users and the AI.
-
-![Screenshot: Secret Echo](https://via.placeholder.com/800x450?text=Secret+Echo+Screenshot)
-
-## Features
-
-- **User Authentication**
-  - JWT-based login and registration
-  - Secure password hashing with bcrypt
-  - Protected routes
-  - Rate limiting for auth endpoints
-
-- **Real-time Messaging**
-  - Instant message delivery
-  - Typing indicators
-  - Optimistic UI updates
-  - Chat history persistence
-  - Local storage fallback when offline
-
-- **AI Response System**
-  - Pattern-based AI responses
-  - Simulated typing delay
-  - Fallback responses
-  - Direct 1-to-1 communication
-
-- **Modern UI**
-  - Responsive design
-  - Dark mode support
-  - Loading indicators
-  - Toast notifications
-
-- **Production Ready**
-  - Comprehensive test coverage (99%+)
-  - Error handling
-  - Rate limiting
-  - Secure authentication
-  - Socket reconnection with fallbacks
-
-## Project Structure
-
-The project is divided into two main parts:
-
-- **Frontend**: Next.js application with React components and hooks
-- **Backend**: Express.js REST API with Socket.io integration
-
-```
-secret-echo/
-├── frontend/           # Next.js React application
-│   ├── app/            # Application code
-│   │   ├── (auth)/     # Authentication pages
-│   │   ├── (chat)/     # Chat pages
-│   │   ├── components/ # Reusable UI components
-│   │   ├── context/    # React contexts
-│   │   ├── hooks/      # Custom React hooks
-│   │   └── utils/      # Utility functions
-│   └── public/         # Static assets
-│
-└── backend/            # Express.js API
-    ├── controllers/    # Request handlers
-    ├── middleware/     # Express middleware
-    ├── models/         # Mongoose models
-    ├── routes/         # API route definitions
-    ├── socket/         # Socket.io setup
-    ├── tests/          # Unit tests (99%+ coverage)
-    └── utils/          # Utility functions
-```
-
-## Architecture Diagram
-
-The following diagram illustrates the overall architecture of the Secret Echo application:
-
-![Architecture Diagram](./docs/images/architecture-diagram.png)
-
-## Technologies Used
-
-### Frontend
-- Next.js 15.x (React 19.x)
-- Tailwind CSS
-- Socket.io Client
-- Axios
-- JWT Decode
-- React Hot Toast
-
-### Backend
-- Node.js
-- Express
-- MongoDB Atlas (Cloud Database)
-- Socket.io
-- JSON Web Tokens
-- bcrypt
-- Express Rate Limit
-- Jest (testing)
-
-## Getting Started
+## Project Setup
 
 ### Prerequisites
 - Node.js (v18+)
@@ -111,22 +16,21 @@ The following diagram illustrates the overall architecture of the Secret Echo ap
    cd secret-echo
    ```
 
-2. Install backend dependencies
+2. Install dependencies
    ```
+   # Backend
    cd backend
    npm install
-   ```
 
-3. Install frontend dependencies
-   ```
+   # Frontend
    cd ../frontend
    npm install
    ```
 
-4. Set up environment variables
+3. Set up environment variables
    - Create `.env` file in the backend directory
    - Create `.env.local` file in the frontend directory
-   - See example files for required variables
+   - See example files in `docs/backend-env.example` and `docs/frontend-env.example`
 
 ### Running the Application
 
@@ -142,84 +46,81 @@ The following diagram illustrates the overall architecture of the Secret Echo ap
    npm run dev
    ```
 
-3. Open your browser and navigate to `http://localhost:3000`
+3. Access the application at `http://localhost:3000`
 
 ### Docker Setup
 
-You can also run the entire application using Docker:
+You can also run the application using Docker:
 
-1. Make sure you have Docker and Docker Compose installed on your system
+1. Create a `.env` file in the root directory using the template in `docs/env.example`
+2. Run `docker-compose up` to start all services
+3. Access the application at `http://localhost:3001`
 
-2. Create a `.env` file in the root directory with your environment variables:
-   ```
-   MONGODB_URI=your_mongodb_connection_string
-   JWT_SECRET=your_jwt_secret
-   FRONTEND_PORT=3001
-   BACKEND_PORT=5000
-   NODE_ENV=development
-   ```
-   (See `docs/env.example` for a template)
+## Architecture Overview
 
-3. Build and start all services:
-   ```
-   docker-compose up
-   ```
+Secret Echo follows a modern full-stack architecture with clear separation between frontend and backend:
 
-4. Access the application at http://localhost:3001
+### Project Structure
 
-5. For production deployment:
-   ```
-   NODE_ENV=production docker-compose -f docker-compose.yml up -d
-   ```
+```
+secret-echo/
+├── frontend/           # Next.js React application
+│   ├── app/            # Application code (pages, components, contexts)
+│   └── public/         # Static assets
+│
+└── backend/            # Express.js REST API
+    ├── controllers/    # Request handlers
+    ├── middleware/     # Express middleware
+    ├── models/         # Mongoose models
+    ├── routes/         # API route definitions
+    ├── socket/         # Socket.io setup
+    ├── tests/          # Unit tests
+    └── utils/          # Utility functions
+```
 
-6. To stop all containers:
-   ```
-   docker-compose down
-   ```
+### Key Design Decisions
 
-## Architecture Decisions
+1. **Authentication Flow**: JWT-based authentication with tokens stored in localStorage and managed via React Context. This provides secure authentication without requiring server-side sessions.
 
-### Authentication Flow
-The application uses JWT tokens for authentication. Tokens are stored in localStorage and automatically included in API requests via Axios interceptors. The AuthContext manages the global authentication state. Rate limiting is applied to auth endpoints for security.
+2. **Real-time Communication**: Socket.io enables bidirectional, event-based communication between the client and server. This technology supports instant message delivery and typing indicators.
 
-### Real-time Communication
-Socket.io is used for real-time message delivery and typing indicators. The server maintains a list of connected users, and messages are sent directly to the specific user's room. Socket connections include reconnection logic for better reliability.
+3. **State Management**: React Context API provides a lightweight solution for global state management without additional dependencies.
 
-### AI Response System
-AI responses are generated using a pattern-matching system. User messages are analyzed for keywords, and appropriate responses are selected from predefined categories. If no pattern matches, a fallback response is used. The system includes delays to simulate realistic typing behavior.
+4. **Database Design**: MongoDB with Mongoose ODM provides a flexible schema for user profiles and message history, ideal for a chat application.
 
-### Database Schema
-The application uses MongoDB with Mongoose for data persistence. The main collections are:
-- Users: Authentication and profile information
-- Messages: Chat history with sender, receiver, and content
+5. **Error Handling**: Centralized error handling middleware with standardized response formats ensures consistent error reporting.
 
-### Testing Approach
-The backend has comprehensive unit test coverage (99%+) using Jest. Tests cover:
-- Controllers (auth, messages)
-- Middleware (error handling, authentication)
-- Utilities (AI responder)
-- Socket functionality
-
-## Performance Optimizations
-
-- Debounced localStorage writes for message history
-- Optimistic UI updates for message sending
-- Efficient socket message handling
-- Simplified code with removal of unused features
-- Direct 1-to-1 messaging without unnecessary broadcasting
+6. **Testing Strategy**: Comprehensive Jest test coverage for the backend ensures reliability.
 
 ## Trade-offs and Limitations
 
-- **AI Response System**: The pattern-based AI responses are simulated and have limited understanding capabilities compared to advanced models like GPT.
-- **Scalability**: The current implementation is designed for moderate user loads. For high-scale deployments, additional considerations would be needed:
+- **AI Response System**: The pattern-based AI response system has limited understanding capabilities compared to advanced LLMs. It can only respond to predefined patterns and lacks true comprehension.
+
+- **Scalability**: The current implementation is designed for moderate user loads. High-scale deployments would require additional infrastructure:
   - Database sharding or read replicas
-  - Load balancing for the Socket.io connections
+  - Load balancing for Socket.io connections
   - Redis for shared socket state in multi-server deployments
-- **Offline Support**: While the application stores messages locally when offline, full offline functionality is limited.
-- **Authentication**: Uses simple JWT tokens without refresh token mechanism, which means longer sessions require re-authentication.
-- **Message History**: There's no pagination implemented for very long conversations, which could affect performance with extensive chat histories.
-- **Testing**: While backend test coverage is extensive (99%+), frontend component testing is more limited.
 
-## License
+- **Offline Support**: While the application stores messages locally when offline, the offline experience is limited and doesn't support full offline operation.
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+- **Authentication**: Uses simple JWT tokens without a refresh token mechanism. Long-running sessions require re-authentication, which may impact user experience.
+
+- **Message History**: No pagination is implemented for conversation history. Large conversation histories may impact performance.
+
+- **Testing Coverage**: Backend has extensive test coverage (99%+), but frontend component testing is more limited.
+
+## Technologies
+
+### Frontend
+- Next.js 15.x (React 19.x)
+- Tailwind CSS
+- Socket.io Client
+- Axios
+
+### Backend
+- Node.js & Express
+- MongoDB Atlas
+- Socket.io
+- JSON Web Tokens
+- bcrypt
+- Jest 

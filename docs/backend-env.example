@@ -1,0 +1,14 @@
+# Server Configuration
+PORT=5000
+NODE_ENV=development
+
+# Database
+# Replace with your MongoDB connection string
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority
+
+# Authentication
+# Replace with a strong random string (keep this secret)
+JWT_SECRET=your_jwt_secret_key_goes_here
+
+# Optional: Cross-Origin Resource Sharing
+# FRONTEND_URL=https://your-frontend-url.com 

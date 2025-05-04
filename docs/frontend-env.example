@@ -1,0 +1,10 @@
+# API Connection
+# Replace with your backend API URL (include /api at the end)
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+
+# Socket Connection
+# Replace with your backend Socket URL (base URL only, no path)
+NEXT_PUBLIC_SOCKET_URL=http://localhost:5000
+
+# Optional Analytics ID
+# NEXT_PUBLIC_ANALYTICS_ID=your-analytics-id 
