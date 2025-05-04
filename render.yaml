@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: secret-echo-backend
+    runtime: docker
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+
+  - type: web
+    name: secret-echo-frontend
+    runtime: docker
+    rootDir: frontend
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          name: secret-echo-backend
+          type: web
+          property: url
+      - key: NEXT_PUBLIC_SOCKET_URL
+        fromService:
+          name: secret-echo-backend
+          type: web
+          property: url 
