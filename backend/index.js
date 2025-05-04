@@ -23,6 +23,7 @@ app.use(cors({
       'http://localhost:3000',
       'http://localhost:3001',
       'https://secret-echo.vercel.app',
+      'https://secret-echo-sigma.vercel.app',
       /^https:\/\/secret-echo-.*\.vercel\.app$/
     ];
     
@@ -66,6 +67,7 @@ const io = new Server(server, {
         'http://localhost:3000',
         'http://localhost:3001',
         'https://secret-echo.vercel.app',
+        'https://secret-echo-sigma.vercel.app',
         /^https:\/\/secret-echo-.*\.vercel\.app$/
       ];
       
