@@ -97,16 +97,11 @@ setupSocket(io);
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/secret-echo')
   .then(() => {
     console.log('Connected to MongoDB');
-    // Start server - only in development, in Vercel serverless this will be handled differently
-    if (process.env.NODE_ENV !== 'production') {
-      server.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-      });
-    }
+    // Start server
+    server.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
   })
   .catch(err => {
     console.error('Failed to connect to MongoDB', err);
-  });
-
-// For Vercel serverless
-module.exports = server; 
+  }); 
