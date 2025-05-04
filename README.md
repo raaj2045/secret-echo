@@ -71,6 +71,12 @@ secret-echo/
     └── utils/          # Utility functions
 ```
 
+## Architecture Diagram
+
+The following diagram illustrates the overall architecture of the Secret Echo application:
+
+![Architecture Diagram](./docs/images/architecture-diagram.png)
+
 ## Technologies Used
 
 ### Frontend
@@ -84,7 +90,7 @@ secret-echo/
 ### Backend
 - Node.js
 - Express
-- MongoDB (Mongoose)
+- MongoDB Atlas (Cloud Database)
 - Socket.io
 - JSON Web Tokens
 - bcrypt
@@ -137,6 +143,39 @@ secret-echo/
    ```
 
 3. Open your browser and navigate to `http://localhost:3000`
+
+### Docker Setup
+
+You can also run the entire application using Docker:
+
+1. Make sure you have Docker and Docker Compose installed on your system
+
+2. Create a `.env` file in the root directory with your environment variables:
+   ```
+   MONGODB_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   FRONTEND_PORT=3001
+   BACKEND_PORT=5000
+   NODE_ENV=development
+   ```
+   (See `docs/env.example` for a template)
+
+3. Build and start all services:
+   ```
+   docker-compose up
+   ```
+
+4. Access the application at http://localhost:3001
+
+5. For production deployment:
+   ```
+   NODE_ENV=production docker-compose -f docker-compose.yml up -d
+   ```
+
+6. To stop all containers:
+   ```
+   docker-compose down
+   ```
 
 ## Architecture Decisions
 

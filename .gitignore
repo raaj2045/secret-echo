@@ -6,3 +6,4 @@ backend/package-lock.json
 backend/coverage
 
 backend/.env
+/.env
